@@ -1,0 +1,21 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%}Posts{% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<h2>Posts</h2>
+
+<ul>
+    {% for post in posts %}
+    <li>
+        <a href="/posts/{{ post.id }}">{{ post.title }}</a>
+        <br>
+        <a href="/users/{{ post.author_user.id }}">By {{ post.author_user.first_name }} {{ post.author_user.last_name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+
+{% endblock %}

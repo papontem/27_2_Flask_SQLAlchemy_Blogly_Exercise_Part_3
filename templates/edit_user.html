@@ -1,0 +1,27 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%}Edit User {{user.id}} {% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<h1>Edit A User</h1>
+<form action="/users/{{user.id}}/edit" method="POST">
+    <label for="first_name">First Name</label>
+    <br>
+    <input type="text" name="first_name" id="first_name" placeholder="Enter first name" value="{{user.first_name}}">
+    <br>
+    <label for="last_name">Last Name (optional)</label>
+    <br>
+    <input type="text" name="last_name" id="last_name" placeholder="Enter last name" value="{{user.last_name}}">
+    <br>
+    <label for="img_url_name">Image URL</label>
+    <br>
+    <input type="text" name="img_url" id="img_url" placeholder="Provide an image of this user" value="{{user.img_url}}">
+    <br>
+    <button>Save</button>
+</form>
+<form id="cancel_button_form" action="/users/{{user.id}}">
+    <button> &lt; Cancel &lt; </button>
+</form>
+{% endblock %}

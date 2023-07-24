@@ -1,0 +1,100 @@
+body {
+	padding: 0;
+	margin: 0;
+	color: black;
+	background-color: bisque;
+}
+.navbar {
+	display: flexbox;
+	justify-content: center;
+	flex-flow: column;
+	align-content: center;
+	background-color: black;
+	padding: 10px;
+}
+.navbar a {
+	margin: 2px;
+	color: white;
+	text-decoration: white wavy underline;
+}
+.navbar a:hover {
+	color: black;
+	background-color: gray;
+}
+h1 {
+	color: blueviolet;
+}
+main#content {
+	padding: 5px;
+	margin: 20px;
+	background-color: white;
+}
+
+.messages li p {
+	padding: 1rem;
+	font-size: 1.5rem;
+	border-radius: 10px;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+.messages .error p {
+	border: solid 2px red;
+	background-color: rgba(252, 124, 145, 0.5);
+}
+.messages .success p {
+	border: solid 2px green;
+	background-color: rgba(144, 255, 144, 0.5);
+}
+
+
+div#user_container {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+}
+
+/* Style for the user image container on the left */
+div#user_img_container {
+  margin: 5px 30px 20px 5px; /* Add spacing between the image and user info/posts */
+}
+
+/* Style for the user profile image */
+img#user_profile_img {
+  width: 20dvw; /* Adjust the image width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+/* Style for the user info and posts container on the right */
+div#user_info_and_posts {
+  flex: 1; /* Allow it to grow and take up remaining space */
+}
+
+/* Style for the user name and options */
+div#user_name_and_options {
+  display: block;
+  margin-bottom: 10px; /* Add spacing between name/options and posts */
+}
+
+/* Style for the edit and delete buttons */
+form#edit_button_form{
+	display: inline;
+}
+form button{
+	color: white;
+	background-color: rgb(115, 145, 250);
+}
+form#cancel_button_form{
+	display: inline;
+}
+form#delete_button_form{
+	display: inline;
+}
+form#delete_button_form button{
+	color: white;
+	background-color: rgb(250, 115, 115);
+}
+
+/* Style for the user posts */
+div#user_posts ul li{ 
+	margin: 5px;
+}
+

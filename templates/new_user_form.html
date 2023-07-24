@@ -1,0 +1,29 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%}New User{% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<h2>Create A New User</h2>
+
+<form action="/users/new" method="POST">
+    <label for="first_name">First Name</label>
+    <br>
+    <input type="text" name="first_name" id="first_name" maxlength="50" placeholder="Enter first name (50 chr MAX)">
+    <br>
+    <label for="last_name">Last Name (optional)</label>
+    <br>
+    <input type="text" name="last_name" id="last_name"maxlength="50" placeholder="Enter last name (50 chr MAX)">
+    <br>
+    <label for="img_url_name">Image URL</label>
+    <br>
+    <input type="text" name="img_url" id="img_url" placeholder="Provide an image of this user">
+    <br>
+    <button>add</button>
+</form>
+<form id="cancel_button_form" action="/users">
+    <button> &lt; Cancel &lt; </button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%}{{ user.first_name }} {{user.last_name}}{% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<div id="user_container">
+	<div id="user_img_container">
+		<!-- these two work for static images  -->
+		<!-- <img src="{{ '/static/imgs/' + user.img_url + '.jpg' }}" alt="User Profile Img Couldn't Be Loaded">  -->
+		<!-- <img id="user_profile_img" src= "{{ url_for( 'static', filename='imgs/'+user.img_url+'.jpg' ) }}" alt="User Profile Img Couldn't Be Loaded"> -->
+		{% if user.img_url is defined and user.img_url is string and user.img_url != 'no_url_given' and user.img_url != '' %}
+        <img
+            id="user_profile_img"
+            src="{{ user.img_url }}"
+            alt="User Profile Img Couldn't Be Loaded" />
+        {% elif user.img_url == ''%}
+        <p>User Profile <br> Img Url Value <br> will be chosen later?</p>
+        {% else %}
+        <p>User Profile <br> Img Url Value <br> Was Not Valid</p>
+        {% endif %}
+	</div>
+	<div id="user_info_and_posts">
+		<div id="user_name_and_options">
+			<h2>{{ user.first_name }} {{user.last_name}}</h2>
+			<form id="edit_button_form" action="/users/{{user.id}}/edit">
+				<button>Edit</button>
+			</form>
+			<form
+				id="delete_button_form"
+				action="/users/{{user.id}}/delete"
+				method="POST">
+				<button>X Delete X</button>
+			</form>
+		</div>
+		<div id="user_posts">
+			<h4>Posts</h4>
+			<ul>
+				<!-- ADD ROUTE TO POST DETAILS -->
+				{% if user.posts %} {% for post in user.posts %}
+				<li><a href="/posts/{{ post.id }}">{{ post.title }}</a></li>
+				{% endfor %} {% endif %}
+			</ul>
+			
+			<form id="add_button_form" action="/users/{{user.id}}/posts/new">
+				<button>Add Post</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

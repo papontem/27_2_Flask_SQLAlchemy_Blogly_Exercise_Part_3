@@ -1,0 +1,23 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%}Edit Post {{post.id}}{% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<h1>Edit A Post</h1>
+<form action="/posts/{{post.id}}/edit" method="POST">
+    <label for="title">Title:</label>
+    <br>
+    <input type="text" name="title" id="title" maxlength="100" placeholder="Enter Post Title (100 chr MAX)" value="{{ post.title }}">
+    <br>
+    <label for="content">Content:</label>
+    <br>
+    <input type="text" name="content" id="content" placeholder="Enter Post Content" value="{{ post.content }}">
+    <br>
+    <button>Save</button>
+</form>
+<form id="cancel_button_form" action="/posts/{{post.id}}">
+    <button> &lt; Cancel &lt; </button>
+</form>
+{% endblock %}

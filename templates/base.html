@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{% block title %}TITLE GOES HERE{% endblock %}</title>
+		<link rel="stylesheet" href="/static/styles.css" />
+
+		<!--V-ANIMATED-Tab-Icon-V-->
+		<link rel="icon" type="gif" href="/static/imgs/pam_favicon_animated.gif" />
+
+		<!-- <script src="http://unpkg.com/jquery"></script> -->
+	</head>
+	<body>
+		<nav class="navbar">
+			<a href="/">Home</a>
+			<a href="/users">Users</a>
+			<a href="/posts">Posts</a>
+		</nav>
+		<hr />
+		<main id="content">
+			{% with messages = get_flashed_messages(with_categories=true) %}
+			<!-- check if messages exist -->
+			{% if messages %}
+			<section class="messages">
+				<ol class="messages">
+					{% for category,msg in messages %}
+					<li class="{{ category }}"><p>{{ msg }}</p></li>
+					{% endfor %}
+				</ol>
+			</section>
+			{% endif %} {% endwith %}
+			<h1>27.3 Flask SQLAlchemy Blogly Exercise Part Three</h1>
+			{% block content %}BODY CONTENT GOES HERE{% endblock %}
+			<!--line to seperate main body and footer -->
+			<hr />
+			<footer>
+				<section class="Footer_Content">
+					<p>&copy; Phedias A.M. All Rights Reserved</p>
+				</section>
+			</footer>
+		</main>
+		<script src="/static/script.js"></script>
+	</body>
+</html>

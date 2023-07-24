@@ -1,0 +1,24 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%}New Post{% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<h2>Add New Post for {{user.first_name}} {{user.last_name}}</h2>
+
+<form action="/users/{{ user.id }}/posts/new" method="POST">
+    <label for="title">Title:</label>
+    <br>
+    <input type="text" name="title" id="title" maxlength="100" placeholder="Enter Post Title (100 chr MAX)">
+    <br>
+    <label for="content">Content:</label>
+    <br>
+    <input type="text" name="content" id="content" placeholder="Enter Post Content">
+    <br>
+    <button>add</button>
+</form>
+<form id="cancel_button_form" action="/users/{{ user.id }}">
+    <button> &lt; Cancel &lt; </button>
+</form>
+{% endblock %}
