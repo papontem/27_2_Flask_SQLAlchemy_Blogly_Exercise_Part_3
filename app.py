@@ -172,9 +172,9 @@ def show_edit_post_form(post_id):
     
     post = Post.query.get_or_404(post_id)
 
-    ## TODO 
+    tags_list = Tag.query.all()
 
-    return render_template('edit_post.html', post=post)
+    return render_template('edit_post.html', post=post, tags_list=tags_list )
 
 # # POST /posts/<int:post_id>/edit
 @app.route('/posts/<int:post_id>/edit', methods=["POST"])
@@ -187,6 +187,23 @@ def edit_post_form_submitted(post_id):
     
     post.title = editing_title
     post.content = editing_content
+
+    # ## TODO CHANGE POST TAGS delete post tag relations no longer needed
+    old_tags_id_list = [tag.id for tag in post.has_tags] # has tags we may want to keep, some we may want to remove
+    
+    edited_tags_id_list = request.form.getlist('tags_id_list') # has what tags the post should now have
+
+    # remove tags relation, the ones we want to remove that are in old list but not in the edited list
+    for tag_id in old_tags_id_list:
+        if tag_id not in edited_tags_id_list:
+            post.has_tags.remove(Tag.query.get_or_404(tag_id))
+
+    # add tags relation
+    for tag_id in edited_tags_id_list:
+        if tag_id not in old_tags_id_list:
+            # from our post go to its has_tags array and add the tag we find it didnt have.
+            post.has_tags.append(Tag.query.get_or_404(tag_id))
+
 
     db.session.add(post)
     db.session.commit()
@@ -286,8 +303,29 @@ def edit_tag_form_submitted(tag_id):
 def delete_tag(tag_id):
     """
         Delete a tag.
+        TODO: BEING ABLE TO UNLINK THE RELATION FROM A TAG'S POSTS and then delete the tag
     """
+    # Pythons Native Debugger here to help ^_^ !! 
+    import pdb
+    pdb.set_trace()
+
     tag = Tag.query.get_or_404(tag_id)
+    
+    # print(" The Tag In the Chopping Block:" , tag, end="\n\n")
+   
+    all_posts_with_tag = tag.has_posts
+
+    # print("\npost list: ", all_posts_with_tag, end="\n\n")
+   
+    for post in all_posts_with_tag:
+        # print("\ncurrent post: ", post,  end="\n\n")
+        post.has_tags.remove(tag)
+        # i added and commit a post to session here to resolve this Error:
+        # sqlalchemy.orm.exc.StaleDataError: DELETE statement on table 'posts_tags' expected to delete 2 row(s); Only 1 were matched.
+        # seems if i delete a tag its ok it it doesnt have any posts , but if i delete multiple ralations between them in post_tags before commiting to session, only the first has an effect and the rest dont get treated the same way?
+        db.session.add(post)
+        db.session.commit()
+
 
     db.session.delete(tag)
     db.session.commit()

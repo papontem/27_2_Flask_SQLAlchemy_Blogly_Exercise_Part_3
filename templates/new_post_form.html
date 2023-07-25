@@ -17,7 +17,14 @@
     <input type="text" name="content" id="content" placeholder="Enter Post Content">
     <br>
     {% for tag in tags_list %}
-    <input type="checkbox" class="tag_checkbox" name="tags_id_list" id="tag_{{tag.name}}" value="{{tag.id}}"> <label for="tag_{{tag.name}}">{{tag.name}}</label>
+    <span>
+        <input type="checkbox"
+        class="tag_checkbox" 
+        name="tags_id_list" 
+        id="tag_{{tag.name}}" 
+        value="{{tag.id}}"> 
+        <label for="tag_{{tag.name}}">{{tag.name}}</label>
+    </span>
     {% endfor %}
     <br>
     <button>add</button>

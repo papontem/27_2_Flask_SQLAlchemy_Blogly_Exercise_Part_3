@@ -1,6 +1,6 @@
 '''Seed file to make sample data for blogly db.'''
 
-from models import User, Post, db
+from models import User, Post, Tag, PostTag, db
 from app import app
 
 # Create all tables
@@ -36,8 +36,9 @@ post_2 = { "title": "Delicious Recipes", "content": "I tried a new recipe today.
 post_3 = { "title": "Exploring New Places", "content": "Visited an amazing new place today."}
 post_4 = { "title": "Whispers of the River: A Fishing Haiku", "content":"Amidst calm waters, Angler casts a hopeful line, Nature\'s dance unfolds." }
 
+# User object
 author_user_0 = pam
-author_user_1 = whiskey  # User object
+author_user_1 = whiskey  
 author_user_2 = bowser 
 author_user_3 = spike
 author_user_4 = larry
@@ -49,6 +50,73 @@ post_1 = Post.create_post(author_user_1, post_1["title"], post_1["content"])
 post_2 = Post.create_post(author_user_2, post_2["title"], post_2["content"])
 post_3 = Post.create_post(author_user_3, post_3["title"], post_3["content"])
 post_4 = Post.create_post(author_user_4, post_4['title'], post_4["content"])
+
+# Add new objects to session, so they'll persist
+db.session.add_all([post_1,post_2,post_3, post_4])
+
+# Commit--otherwise, this never gets saved!
+db.session.commit()
+
+
+## Add tags
+hw    = Tag(name = "HELLO_WORLD" )
+wel   = Tag(name = "Welcome")
+app   = Tag(name = "AppIntroduction")
+bug   = Tag(name = "BugReport")
+wea   = Tag(name = "Weather")
+bea   = Tag(name = "BeautifulDay")
+sun   = Tag(name = "SunnyWeather")
+rec   = Tag(name = "Recipes")
+coo   = Tag(name = "Cooking")
+YOLO  = Tag(name = "YOLO")
+new   = Tag(name = "NewRecipe")
+tra   = Tag(name = "Travel")
+exp   = Tag(name = "Exploration")
+new   = Tag(name = "NewPlaces")
+poe   = Tag(name = "Poetry")
+hai   = Tag(name = "Haiku")
+fis   = Tag(name = "Fishing")
+nat   = Tag(name = "Nature")
+tec   = Tag(name = "TechTags")
+cod   = Tag(name = "CodingLife")
+sof   = Tag(name = "SoftwareDev")
+pyt   = Tag(name = "Pythonic")
+web   = Tag(name = "WebDev")
+dat   = Tag(name = "DataScience")
+ai    = Tag(name = "AIandML")
+cod   = Tag(name = "CodeGeek")
+devop = Tag(name = "DevOps")
+tecom = Tag(name = "TechCommunity")
+
+# Add new objects to session, so they'll persist
+db.session.add_all([hw, wel, app, bug, wea, bea, sun, rec, 
+                    coo, YOLO, new, tra, exp, new, poe, hai, fis, nat, 
+                    tec, cod, sof, pyt, web, dat, ai, cod, devop, tecom])
+
+# Commit--otherwise, this never gets saved!
+db.session.commit()
+
+# Match tags to corresponding posts
+post_0.has_tags.append(wel)
+post_0.has_tags.append(app)
+post_0.has_tags.append(bug)
+
+post_1.has_tags.append(wea)
+post_1.has_tags.append(bea)
+post_1.has_tags.append(sun)
+
+post_2.has_tags.append(rec)
+post_2.has_tags.append(coo)
+post_2.has_tags.append(new)
+
+post_3.has_tags.append(tra)
+post_3.has_tags.append(exp)
+post_3.has_tags.append(new)
+
+post_4.has_tags.append(poe)
+post_4.has_tags.append(hai)
+post_4.has_tags.append(fis)
+post_4.has_tags.append(nat)
 
 # Add new objects to session, so they'll persist
 db.session.add_all([post_1,post_2,post_3, post_4])

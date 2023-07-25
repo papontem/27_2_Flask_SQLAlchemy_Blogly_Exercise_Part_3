@@ -15,6 +15,19 @@
     <br>
     <input type="text" name="content" id="content" placeholder="Enter Post Content" value="{{ post.content }}">
     <br>
+    <!-- add a check condition to seee if tag is one that post already has -->
+    {% for tag in tags_list %}
+    <span>
+        <input type  ="checkbox" 
+        class ="tag_checkbox" 
+        name  ="tags_id_list" 
+        id    ="tag_{{tag.name}}" 
+        value ="{{tag.id}}"
+        {% if tag in post.has_tags %} checked {% endif %}
+        > <label for="tag_{{tag.name}}">{{tag.name}}</label>
+    </span>
+    {% endfor %}
+    <br>
     <button>Save</button>
 </form>
 <form id="cancel_button_form" action="/posts/{{post.id}}">
