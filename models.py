@@ -13,14 +13,6 @@ class User(db.Model):
     """ 
         Users Table
 
-        same as saying:
-        CREATE TABLE users (
-            id SERIAL PRIMARY KEY,
-            first_name VARCHAR(50) NOT NULL,
-            last_name VARCHAR(50),
-            img_url TEXT NOT NULL DEFAULT 'no_url_given'
-        );
-
     """
     # Specify the tablename with __tablename__
     __tablename__ = 'users'
@@ -30,6 +22,8 @@ class User(db.Model):
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=True)
     img_url = db.Column(db.Text(), nullable=False, default='no_url_given')
+
+    # relationships
 
     @classmethod
     def get_all_first_name(cls, name):
@@ -47,7 +41,6 @@ class User(db.Model):
         u = self
         return f"<User id#={u.id} | first_name={u.first_name} | last_name={u.last_name} | img_url={u.img_url}>"
     
-
     def greet(self):
         return f"I'm {self.first_name} {self.last_name}"
     
@@ -55,17 +48,6 @@ class Post(db.Model):
     """
         Posts Table 
 
-        Same as saying:
-        CREATE TABLE posts (
-            id SERIAL PRIMARY KEY,
-            title VARCHAR(100) NOT NULL,
-            content TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT NOW(),
-            user_id INTEGER,
-            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-        );
-
-    
     """
     __tablename__ = 'posts'
     
@@ -75,19 +57,18 @@ class Post(db.Model):
     content = db.Column(db.Text(), nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     
-    # #Foreign keys
+    # # Foreign keys
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    # Relationship
-    # setting up sqlalchemy relationship to handle user_id foreign keys and their contraints primarily on the server side. 
-    # by using the db = SQLAlchemy() object and calling the backref() method, 
-    author_user = db.relationship('User', backref=db.backref('posts', single_parent=True, cascade='all, delete-orphan'))
+    # # Relationships
+    # # .author_user for a post
+    # # and .posts for a user
+    author_user = db.relationship( 'User', backref=db.backref('posts', single_parent=True, cascade='all, delete-orphan'))
+    # assignments = db.relationship('EmployeeProject', backref='employee')
 
-    # # ILL try this if the above does not work
-    # # Add the ForeignKeyConstraint for user_id with ON DELETE CASCADE behavior
-    # __table_args__ = (
-    #     ForeignKeyConstraint([user_id], ['users.id'], ondelete='CASCADE'),
-    # )
+
+    # hash_tags = db.relationship('Tag', secondary="posts_tags", backref="posts")
+    # projects = db.relationship('Project', secondary="employees_projects", backref="employees")
 
     def create_post(author, title, content):
         # Create a new Post object and set its attributes, have sqlalchemy server call its now() function for making datetime values
@@ -101,3 +82,28 @@ class Post(db.Model):
     def __repr__(self):
         p = self
         return f"<Post id#={p.id} | title={p.title} | created_at={p.created_at}>"
+    
+class Tag(db.Model):
+    """
+        Tags table
+    """
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.Text, nullable=False, unique=True)
+    
+    # Relationship
+    # tagged_posts = db.relationship('PostTag', backref="tags")
+
+class PostTag(db.Model):
+    """ 
+        Post Tags table
+        two primary keys made into one. realation table from posts to tags
+    """
+    __tablename__ = 'posts_tags'
+
+    post_id = db.Column(db.Integer, db.ForeignKey(
+        'posts.id'), primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey(
+        'tags.id'), primary_key=True)
+    
