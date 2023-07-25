@@ -1,0 +1,20 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%}Edit Tag {{tag.id}}{% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<h1>Edit A Tag</h1>
+
+<form action="/tags/{{tag.id}}/edit" method="POST">
+    <label for="name">Name:</label>
+    <br>
+    <input type="text" name="name" id="name" placeholder="Enter Tag Name" value="{{ tag.name }}">
+    <br>
+    <button>Save</button>
+</form>
+<form id="cancel_button_form" action="/tags/{{tag.id}}">
+    <button> &lt; Cancel &lt; </button>
+</form>
+{% endblock %}

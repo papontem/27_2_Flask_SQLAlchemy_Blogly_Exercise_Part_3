@@ -65,8 +65,9 @@ class Post(db.Model):
     # # and .posts for a user
     author_user = db.relationship( 'User', backref=db.backref('posts', single_parent=True, cascade='all, delete-orphan'))
 
-    hash_tags = db.relationship('Tag', secondary="posts_tags", backref="posts")
-    # # projects = db.relationship('Project', secondary="employees_projects", backref="employees")
+    # Relationship
+    # posttag = db.relationship('PostTag', backref="posts")
+    has_tags = db.relationship('Tag', secondary="posts_tags", backref="posts")
 
     def create_post(author, title, content):
         # Create a new Post object and set its attributes, have sqlalchemy server call its now() function for making datetime values
@@ -91,7 +92,9 @@ class Tag(db.Model):
     name = db.Column(db.Text, nullable=False, unique=True)
     
     # Relationship
-    tagged_posts = db.relationship('PostTag', backref="tags")
+    # posttag = db.relationship('PostTag', backref="tags")  # cant seem to get to posts from tag, 
+    # posts = db.relationship('Post', backref="tags")       # cant seem to get to posts from tag,
+    has_posts = db.relationship('Post', secondary="posts_tags", backref="tags") #testing in a sec, works to get array of posts that are tagged
 
     def __repr__(self):
         t = self
@@ -114,18 +117,15 @@ class PostTag(db.Model):
 
 # # ipython manual testing
 
-# pam = User.query.get(1)
-# pam
-# # <User id#=1 | first_name=PAM | last_name=DEV | img_url=>
-# pams_post = pam.posts[0]
-# # <Post id#=1 | title=HELLOOOOO | created_at=2023-07-24 18:36:50.213201>
-# pams_post.hash_tags
-# # [<Tag id#=1 | tag name=Hot>]
-# hot = pams_post.hash_tags[0]
-# hot.tagged_posts
-# # [<PostTag | post_id=1 | tag_id=1 |>]
-# cool
-# # <Tag id#=None | tag name=cool>
-# pams_post.hash_tags.append(cool)
-# pams_post.hash_tags
-# # [<Tag id#=1 | tag name=Hot>, <Tag id#=None | tag name=cool>]
+# In [2]: pam = User.query.get(1)
+# 2023-07-25 11:47:02,958 INFO sqlalchemy.engine.base.Engine BEGIN (implicit) 2023-07-25 11:47:02,959 INFO sqlalchemy.engine.base.Engine SELECT users.id AS users_id, users.first_name AS users_first_name, users.last_name AS users_last_name, users.img_url AS users_img_url FROM users WHERE users.id = %(param_1)s 2023-07-25 11:47:02,959 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+
+# In [3]: pams_post = pam.posts[0]
+# 2023-07-25 11:47:20,159 INFO sqlalchemy.engine.base.Engine SELECT posts.id AS posts_id, posts.title AS posts_title, posts.content AS posts_content, posts.created_at AS posts_created_at, posts.user_id AS posts_user_id FROM posts WHERE %(param_1)s = posts.user_id 2023-07-25 11:47:20,159 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+
+# In [4]: hot = pams_post.has_tags[0]
+# 2023-07-25 11:47:36,374 INFO sqlalchemy.engine.base.Engine SELECT tags.id AS tags_id, tags.name AS tags_name FROM tags, posts_tags WHERE %(param_1)s = posts_tags.post_id AND tags.id = posts_tags.tag_id 2023-07-25 11:47:36,375 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+
+# In [5]: hot.has_posts
+# 2023-07-25 11:48:01,502 INFO sqlalchemy.engine.base.Engine SELECT posts.id AS posts_id, posts.title AS posts_title, posts.content AS posts_content, posts.created_at AS posts_created_at, posts.user_id AS posts_user_id FROM posts, posts_tags WHERE %(param_1)s = posts_tags.tag_id AND posts.id = posts_tags.post_id 2023-07-25 11:48:01,502 INFO sqlalchemy.engine.base.Engine {'param_1': 1}
+# Out[5]: [<Post id#=1 | title=HELLOOOOO | created_at=2023-07-24 18:36:50.213201>]

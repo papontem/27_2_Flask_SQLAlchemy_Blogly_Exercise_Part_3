@@ -1,0 +1,27 @@
+<!-- prettier-ignore -->
+{% extends 'base.html'%} 
+{% block title%} Tag {{tag.id}} {% endblock%}
+<!--  -->
+{% block content %}
+<!-- HTML BODY TAG CONTENT OF WEBPAGE -->
+
+<div id="tag_container">
+	<h2>{{ tag.name }}</h2>
+	<!-- <p>{{ tag.id}}</p>
+	<p>{{ tag.has_posts}}</p> -->
+
+	<ul>
+		{% for post in tag.has_posts %}
+		<li><a href="/posts/{{ post.id }}">{{ post.title }}</a></li>
+		{% endfor %}
+	</ul>
+</div>
+
+<form id="edit_button_form" action="/tags/{{ tag.id }}/edit">
+	<button>Edit</button>
+</form>
+
+<form id="delete_button_form" action="/tags/{{ tag.id }}/delete" method="POST">
+	<button>X Delete X</button>
+</form>
+{% endblock %}
