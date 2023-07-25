@@ -64,11 +64,9 @@ class Post(db.Model):
     # # .author_user for a post
     # # and .posts for a user
     author_user = db.relationship( 'User', backref=db.backref('posts', single_parent=True, cascade='all, delete-orphan'))
-    # assignments = db.relationship('EmployeeProject', backref='employee')
 
-
-    # hash_tags = db.relationship('Tag', secondary="posts_tags", backref="posts")
-    # projects = db.relationship('Project', secondary="employees_projects", backref="employees")
+    hash_tags = db.relationship('Tag', secondary="posts_tags", backref="posts")
+    # # projects = db.relationship('Project', secondary="employees_projects", backref="employees")
 
     def create_post(author, title, content):
         # Create a new Post object and set its attributes, have sqlalchemy server call its now() function for making datetime values
@@ -93,7 +91,11 @@ class Tag(db.Model):
     name = db.Column(db.Text, nullable=False, unique=True)
     
     # Relationship
-    # tagged_posts = db.relationship('PostTag', backref="tags")
+    tagged_posts = db.relationship('PostTag', backref="tags")
+
+    def __repr__(self):
+        t = self
+        return f"<Tag id#={t.id} | tag name={t.name}>"
 
 class PostTag(db.Model):
     """ 
@@ -102,8 +104,28 @@ class PostTag(db.Model):
     """
     __tablename__ = 'posts_tags'
 
-    post_id = db.Column(db.Integer, db.ForeignKey(
-        'posts.id'), primary_key=True)
-    tag_id = db.Column(db.Integer, db.ForeignKey(
-        'tags.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
+    tag_id  = db.Column(db.Integer,  db.ForeignKey('tags.id'), primary_key=True)
     
+    def __repr__(self):
+        pt = self
+        return f"<PostTag | post_id={pt.post_id} | tag_id={pt.tag_id} |>"
+    
+
+# # ipython manual testing
+
+# pam = User.query.get(1)
+# pam
+# # <User id#=1 | first_name=PAM | last_name=DEV | img_url=>
+# pams_post = pam.posts[0]
+# # <Post id#=1 | title=HELLOOOOO | created_at=2023-07-24 18:36:50.213201>
+# pams_post.hash_tags
+# # [<Tag id#=1 | tag name=Hot>]
+# hot = pams_post.hash_tags[0]
+# hot.tagged_posts
+# # [<PostTag | post_id=1 | tag_id=1 |>]
+# cool
+# # <Tag id#=None | tag name=cool>
+# pams_post.hash_tags.append(cool)
+# pams_post.hash_tags
+# # [<Tag id#=1 | tag name=Hot>, <Tag id#=None | tag name=cool>]
