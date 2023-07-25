@@ -114,7 +114,9 @@ def new_post(user_id):
     
     user = User.query.get_or_404(user_id)
     
-    return render_template('new_post_form.html', user=user)
+    tags_list = Tag.query.all()
+
+    return render_template('new_post_form.html', user=user, tags_list=tags_list)
 
 # POST /users/<int:user_id>/posts/new
 @app.route('/users/<int:user_id>/posts/new',methods=["POST"])
@@ -125,8 +127,14 @@ def new_post_form_submitted(user_id):
    
     title = request.form["title"]
     content = request.form["content"]
-   
     new_post = Post.create_post(user, title, content)
+    
+    tags_id_list = request.form.getlist('tags_id_list')
+    # tags_id_list is an integer array. ex: [1,2,6,20]
+    for tag_id in tags_id_list:
+        # from our post go to its has_tags array and add the tag we find by querying the Tag model.
+        new_post.has_tags.append(Tag.query.get_or_404(tag_id))
+
     db.session.add(new_post)
     db.session.commit()
     
@@ -161,7 +169,11 @@ def details_post(post_id):
 @app.route('/posts/<int:post_id>/edit')
 def show_edit_post_form(post_id):
     """ Show form to edit a post, and to cancel (back to user page). """
+    
     post = Post.query.get_or_404(post_id)
+
+    ## TODO 
+
     return render_template('edit_post.html', post=post)
 
 # # POST /posts/<int:post_id>/edit

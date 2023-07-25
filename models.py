@@ -92,9 +92,8 @@ class Tag(db.Model):
     name = db.Column(db.Text, nullable=False, unique=True)
     
     # Relationship
-    # posttag = db.relationship('PostTag', backref="tags")  # cant seem to get to posts from tag, 
-    # posts = db.relationship('Post', backref="tags")       # cant seem to get to posts from tag,
-    has_posts = db.relationship('Post', secondary="posts_tags", backref="tags") #testing in a sec, works to get array of posts that are tagged
+    #a through relation
+    has_posts = db.relationship('Post', secondary="posts_tags", backref="tags") #works to get array of posts that are tagged
 
     def __repr__(self):
         t = self

@@ -9,6 +9,14 @@
 	<h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
     <p><i> By {{ post.author_user.first_name }} {{ post.author_user.last_name }} </i></p>
+    <div id="post_tag_subcontainer">
+        <p>
+            <b>Tags:</b>
+            {% for tag in post.has_tags %}
+            | <span class="post_tag"><a href="/tags/{{tag.id}}"> {{tag.name}} </a></span> |
+            {% endfor %}
+        </p>
+    </div>
 </div>
 <form id="cancel_button_form" action="/users/{{ post.author_user.id }}">
     <button> &lt; Cancel &lt; </button>
