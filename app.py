@@ -215,9 +215,26 @@ def edit_post_form_submitted(post_id):
 def delete_post(post_id):
     """Delete the post. redirect to user details page"""
 
+    # # Pythons Native Debugger here to help ^_^ !! 
+    # import pdb
+    # pdb.set_trace()
+
     post = Post.query.get_or_404(post_id)
     #save author id int for redirecting after deletion
     post_author_id = post.author_user.id
+
+    all_tags_of_this_post = post.has_tags
+   
+    for tag in all_tags_of_this_post:
+
+        tag.has_posts.remove(post)
+        # i added and commit a tag to session here to resolve this Error:
+        # sqlalchemy.orm.exc.StaleDataError: DELETE statement on table 'posts_tags' expected to delete 4 row(s); Only 0 were matched.
+        # seems if i delete a tag its ok it it doesnt have any posts , but if i delete multiple ralations between them in post_tags before commiting to session, only the first has an effect and the rest dont get treated the same way?
+        db.session.add(tag)
+        db.session.commit()
+
+
     db.session.delete(post)
     db.session.commit()
 
@@ -303,22 +320,14 @@ def edit_tag_form_submitted(tag_id):
 def delete_tag(tag_id):
     """
         Delete a tag.
-        TODO: BEING ABLE TO UNLINK THE RELATION FROM A TAG'S POSTS and then delete the tag
     """
-    # Pythons Native Debugger here to help ^_^ !! 
-    import pdb
-    pdb.set_trace()
 
     tag = Tag.query.get_or_404(tag_id)
-    
-    # print(" The Tag In the Chopping Block:" , tag, end="\n\n")
    
     all_posts_with_tag = tag.has_posts
-
-    # print("\npost list: ", all_posts_with_tag, end="\n\n")
    
     for post in all_posts_with_tag:
-        # print("\ncurrent post: ", post,  end="\n\n")
+
         post.has_tags.remove(tag)
         # i added and commit a post to session here to resolve this Error:
         # sqlalchemy.orm.exc.StaleDataError: DELETE statement on table 'posts_tags' expected to delete 2 row(s); Only 1 were matched.
@@ -326,7 +335,7 @@ def delete_tag(tag_id):
         db.session.add(post)
         db.session.commit()
 
-
+    # DELETE the tag
     db.session.delete(tag)
     db.session.commit()
     
