@@ -192,3 +192,71 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f'/users/{post_author_id}')
+
+
+
+# GET /tags
+@app.route('/tags')
+def list_tags():
+    """
+        Lists all tags, with links to the tag detail page.
+    """
+    # # TODO: 
+    return redirect("/")
+
+# GET /tags/[tag-id]
+@app.route('/tags/<int:tag_id>')
+def details_tag(tag_id):
+    """
+        Show detail about a tag. Have links to edit form and to delete.
+    """
+    # # TODO: 
+    return redirect("/")
+
+# GET /tags/new
+@app.route('/tags/new')
+def new_tag_form():
+    """
+        Shows a form to add a new tag.
+    """
+    # # TODO: 
+    return redirect("/")
+
+# POST /tags/new
+@app.route('/tags/new')
+def new_tag_form_submitted():
+    """
+        Process add form, adds tag, and redirect to tag list.
+    """
+    # # TODO: 
+    return redirect("/")
+
+# GET /tags/[tag-id]/edit
+@app.route('/tags/<int:tag_id>/edit')
+def edit_tag_form(tag_id):
+    """
+        Show edit form for a tag.
+    """
+    # # TODO: 
+    return redirect("/")
+
+# POST /tags/[tag-id]/edit
+@app.route('/tags/<int:tag_id>/edit')
+def edit_tag_form_submitted(tag_id):
+    """
+        Process edit form, edit tag, and redirects to the tags list.
+    """
+    # # TODO: 
+    return redirect("/")
+
+# POST /tags/[tag-id]/delete
+@app.route('/tags/<int:tag_id>/delete')
+def delete_tag(tag_id):
+    """
+        Delete a tag.
+    """
+    # # TODO: 
+    return redirect("/")
+
+
+
