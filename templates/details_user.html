@@ -7,9 +7,6 @@
 
 <div id="user_container">
 	<div id="user_img_container">
-		<!-- these two work for static images  -->
-		<!-- <img src="{{ '/static/imgs/' + user.img_url + '.jpg' }}" alt="User Profile Img Couldn't Be Loaded">  -->
-		<!-- <img id="user_profile_img" src= "{{ url_for( 'static', filename='imgs/'+user.img_url+'.jpg' ) }}" alt="User Profile Img Couldn't Be Loaded"> -->
 		{% if user.img_url is defined and user.img_url is string and user.img_url != 'no_url_given' and user.img_url != '' %}
         <img
             id="user_profile_img"

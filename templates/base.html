@@ -5,11 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>{% block title %}TITLE GOES HERE{% endblock %}</title>
 		<link rel="stylesheet" href="/static/styles.css" />
-
-		<!--V-ANIMATED-Tab-Icon-V-->
 		<link rel="icon" type="gif" href="/static/imgs/pam_favicon_animated.gif" />
-
-		<!-- <script src="http://unpkg.com/jquery"></script> -->
 	</head>
 	<body>
 		<nav class="navbar">
@@ -21,7 +17,6 @@
 		<hr />
 		<main id="content">
 			{% with messages = get_flashed_messages(with_categories=true) %}
-			<!-- check if messages exist -->
 			{% if messages %}
 			<section class="messages">
 				<ol class="messages">
@@ -33,7 +28,6 @@
 			{% endif %} {% endwith %}
 			<h1>27.3 Flask SQLAlchemy Blogly Exercise Part Three</h1>
 			{% block content %}BODY CONTENT GOES HERE{% endblock %}
-			<!--line to seperate main body and footer -->
 			<hr />
 			<footer>
 				<section class="Footer_Content">
@@ -41,6 +35,5 @@
 				</section>
 			</footer>
 		</main>
-		<script src="/static/script.js"></script>
 	</body>
 </html>
