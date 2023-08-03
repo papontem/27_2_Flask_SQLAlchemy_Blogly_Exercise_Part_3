@@ -24,7 +24,6 @@ def homepage():
     # return render_template("home.html")
     return redirect('/users')
 
-#########################################################################################
 @app.route('/users')
 def list_user():
     """ a lists of all posts titles
@@ -105,8 +104,6 @@ def delete_the_user(user_id):
     return redirect("/users")
 
 
-#########################################################################################
-
 # GET /users/<int:user_id>/posts/new
 @app.route('/users/<int:user_id>/posts/new')
 def new_post(user_id):
@@ -121,7 +118,10 @@ def new_post(user_id):
 # POST /users/<int:user_id>/posts/new
 @app.route('/users/<int:user_id>/posts/new',methods=["POST"])
 def new_post_form_submitted(user_id):
-    """ Process the add post form; add post to posts table with user_id  and redirect to the user detail page. """
+    """ 
+        Process the add post form; add post to posts table with-
+        -user_id and redirect to the user detail page. 
+    """
    
     user = User.query.get_or_404(user_id)
    
@@ -228,9 +228,14 @@ def delete_post(post_id):
     for tag in all_tags_of_this_post:
 
         tag.has_posts.remove(post)
-        # i added and commit a tag to session here to resolve this Error:
-        # sqlalchemy.orm.exc.StaleDataError: DELETE statement on table 'posts_tags' expected to delete 4 row(s); Only 0 were matched.
-        # seems if i delete a tag its ok it it doesnt have any posts , but if i delete multiple ralations between them in post_tags before commiting to session, only the first has an effect and the rest dont get treated the same way?
+        # PAM: i added and commit a post to session here to resolve this Error:
+        
+        # sqlalchemy.orm.exc.StaleDataError: DELETE statement on table 'posts_tags' expected to delete 2 row(s); Only 1 were matched.
+
+        # PAM: seems if i delete a tag its ok it it doesnt have any posts , 
+        # but if i delete multiple ralations between them in post_tags before 
+        # commiting to session, only the first has an effect and the rest dont get treated the same way?
+        
         db.session.add(tag)
         db.session.commit()
 
@@ -239,9 +244,6 @@ def delete_post(post_id):
     db.session.commit()
 
     return redirect(f'/users/{post_author_id}')
-
-#########################################################################################
-# adding tag routes
 
 # GET /tags
 @app.route('/tags')
@@ -329,9 +331,14 @@ def delete_tag(tag_id):
     for post in all_posts_with_tag:
 
         post.has_tags.remove(tag)
-        # i added and commit a post to session here to resolve this Error:
+        # PAM: i added and commit a post to session here to resolve this Error:
+
         # sqlalchemy.orm.exc.StaleDataError: DELETE statement on table 'posts_tags' expected to delete 2 row(s); Only 1 were matched.
-        # seems if i delete a tag its ok it it doesnt have any posts , but if i delete multiple ralations between them in post_tags before commiting to session, only the first has an effect and the rest dont get treated the same way?
+
+        # PAM: seems if i delete a tag its ok it it doesnt have any posts , 
+        # but if i delete multiple ralations between them in post_tags before 
+        # commiting to session, only the first has an effect and the rest dont get treated the same way?
+
         db.session.add(post)
         db.session.commit()
 
