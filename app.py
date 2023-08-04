@@ -8,10 +8,13 @@ from secrets import RENDER_ENV_VAR
 app = Flask(__name__)
 
 # Flask-SQLAlchemy settings
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly' 
+# #### Local db
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
 
-#### LOCAL SECRET TO ELEPHANT CONNECTION WORKS
-## TODO TESTING RENDER SECRETS
+# #### Local ElephantSQL connection works 
+# app.config['SQLALCHEMY_DATABASE_URI'] = RENDER_ENV_VAR['ELEPHANT_DATABASE_URL'] 
+
+#### Live render works now with addition of secrets file.
 app.config['SQLALCHEMY_DATABASE_URI'] = RENDER_ENV_VAR['DATABASE_URL'] 
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
