@@ -3,17 +3,25 @@
 from flask import Flask, request, render_template, redirect, flash, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, User, Post, Tag, PostTag
+# from secrets import RENDER_ENV_VAR
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
+
+# Flask-SQLAlchemy settings
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly' 
+# app.config['SQLALCHEMY_DATABASE_URI'] = RENDER_ENV_VAR['DATABASE_URL'] # LOCAL TO ELEPHANT CONNECTION, works
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL # TODO TEST RENDER LIVE DEPLOYED ENV VARIABLE NAME 
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 
-#flask debugtoolbar settings
+# Flask-Debugtoolbar settings
 app.config['SECRET_KEY'] = "oh-so-secret"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app) 
 
+# FSQLA Init
 connect_db(app)
 db.create_all()
 
